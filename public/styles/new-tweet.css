@@ -1,0 +1,31 @@
+.tweet-form{
+  display: flex;
+  flex-direction: column;
+  vertical-align: text-top;
+}
+
+textarea{
+  background-color: transparent;
+  border: none;
+  border-bottom: 3px solid #4b4b4b;
+  margin-bottom: 10px;
+}
+
+.btn-div {
+  display: flex;
+  justify-content: space-between;
+}
+#tweet-btn{
+  background-color: #4056A1;
+  color: #ffffff;
+}
+#tweet-btn,#counter {
+ font-family: 'Bungee', cursive, sans-serif;
+}
+#tweet-label{
+  margin-top: 10px;
+
+}
+.overLimit {
+  color: red;
+}
