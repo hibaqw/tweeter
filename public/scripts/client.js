@@ -7,15 +7,19 @@ $(document).ready(function(){
   // Test / driver code (temporary). Eventually will get this from the server.
   //function to validate user input
   const validateTweet = function (){
+    $('.counter').text(140);
     const $newTweet = $('textarea');
+    // if clause to handle input in the case that it is null
     if ($newTweet.val() === null){
       $(".create-new-tweet").prepend($("<div>").addClass("isa_error").text("Oops 😨. Looks like there was a problem. Please try again").fadeIn(200).fadeOut(4500));
       return;
     }
+    // if clause to handle input in the case that it is empty
     if ($newTweet.val() === ""){
       $(".create-new-tweet").prepend($("<div>").addClass("isa_error").text("Oops 😨. Looks like you've tired to post an empty tweet. Please try again").fadeIn(200).fadeOut(4500));
       return;
     }
+    // if clause to handle input that exceeds maximum count
     if ($newTweet.val().length > 140){
       $(".create-new-tweet").prepend($("<div>").addClass("isa_error").text("Oops 😨. Characters must not exceed 140...Please try again.").fadeIn(200).fadeOut(4500));
       return;
@@ -39,7 +43,6 @@ $(document).ready(function(){
       data: $(".create-new-tweet").serialize(),
       dataType: 'json',
       success: function (data) {
-        $('.counter').val(140);
         renderTweets(data);
       }
     })
