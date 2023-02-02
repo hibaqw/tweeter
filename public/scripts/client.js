@@ -5,62 +5,62 @@
  */
 $(document).ready(function(){
   // Test / driver code (temporary). Eventually will get this from the server.
-  $('.tweet-form').on( 'submit',function(event){
+  $(".create-new-tweet").submit(function(event){
     event.preventDefault();
-    const data = [
-      {
-        "user": {
-          "name": "Newton",
-          "avatars": "https://i.imgur.com/73hZDYK.png"
-          ,
-          "handle": "@SirIsaac"
-        },
-        "content": {
-          "text": "If I have seen further it is by standing on the shoulders of giants"
-        },
-        "created_at": 1461116232227
-      },
-      {
-        "user": {
-          "name": "Descartes",
-          "avatars": "https://i.imgur.com/nlhLi3I.png",
-          "handle": "@rd" },
-        "content": {
-          "text": "Je pense , donc je suis"
-        },
-        "created_at": 1461113959088
+    // Fetch tweets that have been created and tweets that are in Database
+  const handleFormData = function () {
+    $.ajax({
+      url: "/tweets",
+      method: 'POST',
+      data: $(".create-new-tweet").serialize(),
+      dataType: 'json',
+      success: function (data) {
+        console.log('success!');
       }
-    ]
-  
-      const createTweetElement = function(tweet){
-        const $article = $("<article>").addClass('article-tweet');
-        const $header = $("<header>").addClass('header-tweet');
-        const $footer = $("<footer>").addClass('footer-tweet');
-        const $aviDiv = $("<div>").addClass('avi-div');
-        const $username = $("<h6>").addClass('tweet-text').text(tweet.user.handle);
-        const $name = $("<h6>").addClass('tweet-text').text(tweet.user.name);
-        // const image = new Image();
-        // const $userIcon = new Image().addClass('avi');
-        const $userIcon =  $("<img/>", {
-          src: tweet.user.avatars }).addClass('avi');
-        // $userIcon.src = tweet.user.avatars;
-        const $border = $("<div>").addClass('tweet-border');
-        const $tweet = $("<h5>").text("If I have Seen further it is by standing on the shoulders of giants").attr('id', 'user-comment');
-        const $dateIconContainer = $("<div>").addClass('date-icon-container');
-        const $iconContainer = $("<div>").addClass('icon-container');
-        const date = $("<h6>").addClass('tweet-text').text('10 days ago');
-        const flag = $('<i>').addClass("fa-solid fa-flag");
-        const retweet = $('<i>').addClass("fa-solid fa-retweet");
-        const heart = $('<i>').addClass("fas fa-heart");
+    })
+  }
 
-        $iconContainer.append(flag,retweet,heart);
-        $dateIconContainer.append(date,$iconContainer);
-        $aviDiv.append($userIcon, $name);
-        $header.append($aviDiv,$username);
-        $footer.append($dateIconContainer);
-        $article.append($header, $tweet, $border, $footer);
+  handleFormData();
+  const loadTweets = function () {
+    $.ajax({
+      url: "/tweets",
+      method: 'GET',
+      data: $(".create-new-tweet").serialize(),
+      dataType: 'json',
+      success: function (data) {
+        renderTweets(data);
+      }
+    })
+  }
+  loadTweets();
+  const createTweetElement = function(tweet){
+    const $article = $("<article>").addClass('article-tweet');
+    const $header = $("<header>").addClass('header-tweet');
+    const $footer = $("<footer>").addClass('footer-tweet');
+    const $aviDiv = $("<div>").addClass('avi-div');
+    const $username = $("<h6>").addClass('tweet-text').text(tweet.user.handle);
+    const $name = $("<h6>").addClass('tweet-text').text(tweet.user.name);
+    // const image = new Image();
+    // const $userIcon = new Image().addClass('avi');
+    const $userIcon =  $("<img/>", {
+      src: tweet.user.avatars }).addClass('avi');
+      // $userIcon.src = tweet.user.avatars;
+      const $border = $("<div>").addClass('tweet-border');
+      const $tweet = $("<h5>").text("If I have Seen further it is by standing on the shoulders of giants").attr('id', 'user-comment');
+      const $dateIconContainer = $("<div>").addClass('date-icon-container');
+      const $iconContainer = $("<div>").addClass('icon-container');
+      const date = $("<h6>").addClass('tweet-text').text(timeago.format(tweet.created_at));
+      const flag = $('<i>').addClass("fa-solid fa-flag");
+      const retweet = $('<i>').addClass("fa-solid fa-retweet");
+      const heart = $('<i>').addClass("fas fa-heart");
 
-        return $article;
+      $iconContainer.append(flag,retweet,heart);
+       $dateIconContainer.append(date,$iconContainer);
+      $aviDiv.append($userIcon, $name);
+      $header.append($aviDiv,$username);
+      $footer.append($dateIconContainer);
+      $article.append($header, $tweet, $border, $footer);
+      return $article;
       }
       const renderTweets = function(tweets) {
         // loops through tweets
@@ -74,7 +74,7 @@ $(document).ready(function(){
         }
       }
 
-      renderTweets(data);
+      // renderTweets(data);
     });
 
 });
