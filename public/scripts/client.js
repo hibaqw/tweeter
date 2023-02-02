@@ -7,7 +7,21 @@ $(document).ready(function(){
   // Test / driver code (temporary). Eventually will get this from the server.
   $(".create-new-tweet").submit(function(event){
     event.preventDefault();
-    // Fetch tweets that have been created and tweets that are in Database
+   const $newTweet = $(this).children('textarea');
+
+    if ($newTweet.val() === null){
+      alert("Oops. There was an error. Please try submitting a tweet again");
+      return;
+    }
+    if ($newTweet.val() === ""){
+      alert("Oops. Looks like you tried to an empty tweet. Please try submitting a tweet again");
+      return;
+    }
+    if ($newTweet.val().length > 140){
+      alert("Oops. Looks like your tweet exceeds the maximum character count. Please try submitting a tweet again");
+      return;
+    }
+   // Fetch tweets that have been created and tweets that are in Database
   const handleFormData = function () {
     $.ajax({
       url: "/tweets",
@@ -75,7 +89,7 @@ $(document).ready(function(){
       }
 
       // renderTweets(data);
-    });
+     });
 
 });
 
