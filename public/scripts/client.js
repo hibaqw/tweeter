@@ -5,36 +5,33 @@
  */
 $(document).ready(function(){
   // Test / driver code (temporary). Eventually will get this from the server.
-  $(".create-new-tweet").submit(function(event){
-    event.preventDefault();
-   const $newTweet = $(this).children('textarea');
-
+  //function to validate user input
+  const validateTweet = function (){
+    const $newTweet = $('textarea');
     if ($newTweet.val() === null){
-      alert("Oops. There was an error. Please try submitting a tweet again");
+      $(".create-new-tweet").prepend($("<div>").addClass("isa_error").text("Oops 😨. Looks like there was a problem. Please try again").fadeIn(200).fadeOut(4500));
       return;
     }
     if ($newTweet.val() === ""){
-      alert("Oops. Looks like you tried to an empty tweet. Please try submitting a tweet again");
+      $(".create-new-tweet").prepend($("<div>").addClass("isa_error").text("Oops 😨. Looks like you've tired to post an empty tweet. Please try again").fadeIn(200).fadeOut(4500));
       return;
     }
     if ($newTweet.val().length > 140){
-      alert("Oops. Looks like your tweet exceeds the maximum character count. Please try submitting a tweet again");
+      $(".create-new-tweet").prepend($("<div>").addClass("isa_error").text("Oops 😨. Characters must not exceed 140...Please try again.").fadeIn(200).fadeOut(4500));
       return;
-    }
-   // Fetch tweets that have been created and tweets that are in Database
-  const handleFormData = function () {
-    $.ajax({
-      url: "/tweets",
-      method: 'POST',
-      data: $(".create-new-tweet").serialize(),
-      dataType: 'json',
-      success: function (data) {
-        console.log('success!');
-      }
-    })
-  }
 
-  handleFormData();
+    }
+
+    return true; 
+  };
+//function to send user tweet to "database"
+  const handleFormData = function () {
+    const serializedData = $(".create-new-tweet").serialize();
+      $.post("/tweets", serializedData, function () {
+        $("textarea").val("");
+      });
+    }
+//loads database of tweets onto webpage
   const loadTweets = function () {
     $.ajax({
       url: "/tweets",
@@ -42,11 +39,12 @@ $(document).ready(function(){
       data: $(".create-new-tweet").serialize(),
       dataType: 'json',
       success: function (data) {
+        $('.counter').val(140);
         renderTweets(data);
       }
     })
   }
-  loadTweets();
+//creates html for tweet
   const createTweetElement = function(tweet){
     const $article = $("<article>").addClass('article-tweet');
     const $header = $("<header>").addClass('header-tweet');
@@ -60,7 +58,7 @@ $(document).ready(function(){
       src: tweet.user.avatars }).addClass('avi');
       // $userIcon.src = tweet.user.avatars;
       const $border = $("<div>").addClass('tweet-border');
-      const $tweet = $("<h5>").text("If I have Seen further it is by standing on the shoulders of giants").attr('id', 'user-comment');
+      const $tweet = $("<h5>").text(tweet.content.text).attr('id', 'user-comment');
       const $dateIconContainer = $("<div>").addClass('date-icon-container');
       const $iconContainer = $("<div>").addClass('icon-container');
       const date = $("<h6>").addClass('tweet-text').text(timeago.format(tweet.created_at));
@@ -69,7 +67,7 @@ $(document).ready(function(){
       const heart = $('<i>').addClass("fas fa-heart");
 
       $iconContainer.append(flag,retweet,heart);
-       $dateIconContainer.append(date,$iconContainer);
+      $dateIconContainer.append(date,$iconContainer);
       $aviDiv.append($userIcon, $name);
       $header.append($aviDiv,$username);
       $footer.append($dateIconContainer);
@@ -80,16 +78,26 @@ $(document).ready(function(){
         // loops through tweets
         // calls createTweetElement for each tweet
         // takes return value and appends it to the tweets container
-
+         const $tweetContainer = $("section");
+         $tweetContainer.empty();
         for( const tweet of tweets){
           let $newPost = createTweetElement(tweet);
-          $('#tweets-container').append($newPost);
+          $('section').prepend($newPost);
 
         }
       }
+     
 
-      // renderTweets(data);
-     });
+//handles submit event
+  $(".create-new-tweet").submit(function(event){
+    event.preventDefault();
+    if (validateTweet()) {
+      handleFormData();
+      loadTweets();
+    }
+    
+});
 
 });
+
 

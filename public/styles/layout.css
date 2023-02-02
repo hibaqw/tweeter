@@ -26,6 +26,13 @@ nav {
   position: fixed;
   top: 0; /* Position the navbar at the top of the page */
   width: 100%;
+  z-index: 1;
+  height: 120px;
+  background-color:#ffe3d5;
+  background-image: url("https://www.transparenttextures.com/patterns/shattered.png");
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .nav-logo{
@@ -42,31 +49,39 @@ nav {
   color: #FFFFFF;
 
 }
-i {
+#arrow {
   color:orangered;
   align-self: center;
   margin-right: 20pt;
-}
-
-
-nav{
-  height: 120px;
-  background-color: #4056A1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 body {
   height: 100%;
   display:flex;
   flex-direction:column;
-  align-items:center;
 }
-main {
+main, section{
   width: 90%;
-  height: 300px;
-  background-color: #ffefc7;
+}
+main{
+  margin-top: 120px;
+}
+
+
+@media only screen and (min-width: 960px) {
+  /* Write CSS rules that target small laptop screen sizes and beyond */
+  .header-content-container {
+    display: flex;
+    flex-direction: row;
+    gap:65px;
+    margin-top: 78px;
+    padding: 75px;
+    
+    
+  } 
+  nav{
+    background-color: #4056A1;
+  }
 }
 
 

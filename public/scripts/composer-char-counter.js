@@ -1,7 +1,7 @@
 $(document).ready(function() {
   // --- our code goes here ---
 
-  $('textarea').on('keyup', function(e){
+  $('textarea').on('input', function(e){
     /* questions: how to determine a better selector
     * how to add to counter i.e delete
     * 
