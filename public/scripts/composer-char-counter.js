@@ -10,8 +10,8 @@ $(document).ready(function() {
   const btnDiv = $(this).parent().children(".btn-div");
   const counter = btnDiv.children(".counter");
   const max = 140;
-  counter.html(max - $(this).val().trim().length);
-  counter.html() <= 0 ? counter.addClass('overLimit'): counter.removeClass('overLimit');
+  counter.html(max - $(this).val().length);
+  counter.html() < 0 ? counter.addClass('overLimit'): counter.removeClass('overLimit');
 
  });
 });

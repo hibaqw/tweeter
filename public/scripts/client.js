@@ -7,7 +7,7 @@ $(document).ready(function(){
   // Test / driver code (temporary). Eventually will get this from the server.
   //function to validate user input
   const validateTweet = function (){
-    $('.counter').text(140);
+    // $('.counter').text(139);
     const $newTweet = $('textarea');
     // if clause to handle input in the case that it is null
     if ($newTweet.val() === null){
@@ -34,6 +34,7 @@ $(document).ready(function(){
       $.post("/tweets", serializedData, function () {
         $("textarea").val("");
         loadTweets();
+        $('.counter').text(140);
       });
     }
 //loads database of tweets onto webpage
