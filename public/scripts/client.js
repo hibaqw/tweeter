@@ -33,6 +33,7 @@ $(document).ready(function(){
     const serializedData = $(".create-new-tweet").serialize();
       $.post("/tweets", serializedData, function () {
         $("textarea").val("");
+        loadTweets();
       });
     }
 //loads database of tweets onto webpage
@@ -96,7 +97,7 @@ $(document).ready(function(){
     event.preventDefault();
     if (validateTweet()) {
       handleFormData();
-      loadTweets();
+     
     }
     
 });
